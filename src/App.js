@@ -23,16 +23,16 @@ function App() {
       <div>
         <nav>
           <ul>
-            <li><Link to="/react-setup/">Home</Link></li>
-            <li><Link to="/react-setup/about">About</Link></li>
-            <li><Link to="/react-setup/contact">Contact</Link></li>
+            <li><Link to="/">Home</Link></li>
+            <li><Link to="/about">About</Link></li>
+            <li><Link to="/contact">Contact</Link></li>
           </ul>
         </nav>
 
         <Routes>
-          <Route path="/react-setup/" element={<Home />} />
-          <Route path="/react-setup/about" element={<About />} />
-          <Route path="/react-setup/contact" element={<Contact />} />
+          <Route path="/" element={<Home />} />
+          <Route path="/about" element={<About />} />
+          <Route path="/contact" element={<Contact />} />
           <Route path="*" element={<NotFound />} />
         </Routes>
       </div>
