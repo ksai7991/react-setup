@@ -17,15 +17,17 @@ function NotFound() {
 }
 
 function App() {
-  const [currentPage, setCurrentPage] = useState(window.location.pathname);
+  const basePath = '/v3'; // Base path
 
-  // Check the URL on component mount and whenever it changes
+  // Initialize the currentPage based on the URL
+  const [currentPage, setCurrentPage] = useState(window.location.pathname.replace(basePath, ''));
+
+  // Update currentPage state when the URL changes
   useEffect(() => {
     const handleLocationChange = () => {
-      setCurrentPage(window.location.pathname);
+      setCurrentPage(window.location.pathname.replace(basePath, ''));
     };
 
-    // Listen to popstate event for back/forward navigation
     window.addEventListener('popstate', handleLocationChange);
 
     // Cleanup on unmount
@@ -52,9 +54,9 @@ function App() {
     <div>
       <nav>
         <ul>
-          <li><a href="/" onClick={(e) => { e.preventDefault(); setCurrentPage('/'); window.history.pushState({}, '', '/'); }}>Home</a></li>
-          <li><a href="/about" onClick={(e) => { e.preventDefault(); setCurrentPage('/about'); window.history.pushState({}, '', '/about'); }}>About</a></li>
-          <li><a href="/contact" onClick={(e) => { e.preventDefault(); setCurrentPage('/contact'); window.history.pushState({}, '', '/contact'); }}>Contact</a></li>
+          <li><a href={`${basePath}/`} onClick={(e) => { e.preventDefault(); setCurrentPage('/'); window.history.pushState({}, '', `${basePath}/`); }}>Home</a></li>
+          <li><a href={`${basePath}/about`} onClick={(e) => { e.preventDefault(); setCurrentPage('/about'); window.history.pushState({}, '', `${basePath}/about`); }}>About</a></li>
+          <li><a href={`${basePath}/contact`} onClick={(e) => { e.preventDefault(); setCurrentPage('/contact'); window.history.pushState({}, '', `${basePath}/contact`); }}>Contact</a></li>
         </ul>
       </nav>
 
