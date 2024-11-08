@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { Link } from 'react-router-dom';
 
 function Home() {
   return <h2>Home Page</h2>;
@@ -17,46 +18,21 @@ function NotFound() {
 }
 
 function App() {
-  const [currentPage, setCurrentPage] = useState('/');
-
-  // Check the URL on component mount
-  useEffect(() => {
-    const handleLocationChange = () => {
-      setCurrentPage(window.location.pathname);
-    };
-
-    window.addEventListener('popstate', handleLocationChange);
-
-    // Cleanup on unmount
-    return () => {
-      window.removeEventListener('popstate', handleLocationChange);
-    };
-  }, []);
-
-  const renderPage = () => {
-    switch (currentPage) {
-      case '/':
-        return <Home />;
-      case '/about':
-        return <About />;
-      case '/contact':
-        return <Contact />;
-      default:
-        return <NotFound />;
-    }
-  };
-
   return (
     <div>
       <nav>
         <ul>
-          <li><a href="/" onClick={(e) => { e.preventDefault(); setCurrentPage('/'); }}>Home</a></li>
-          <li><a href="/about" onClick={(e) => { e.preventDefault(); setCurrentPage('/about'); }}>About</a></li>
-          <li><a href="/contact" onClick={(e) => { e.preventDefault(); setCurrentPage('/contact'); }}>Contact</a></li>
+          <li><Link to="/about">About</Link></li>
+          <li><Link to="/contact">Contact</Link></li>
         </ul>
       </nav>
 
-      {renderPage()}
+      <Routes>
+        <Route path="/" element={<Home />} />
+        <Route path="/about" element={<About />} />
+        <Route path="/contact" element={<Contact />} />
+        <Route path="*" element={<NotFound />} />
+      </Routes>
     </div>
   );
 }
