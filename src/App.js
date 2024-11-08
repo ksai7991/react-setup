@@ -1,5 +1,4 @@
 import React, { useState, useEffect } from 'react';
-import { Link } from 'react-router-dom';
 
 function Home() {
   return <h2>Home Page</h2>;
@@ -18,21 +17,48 @@ function NotFound() {
 }
 
 function App() {
+  const [currentPage, setCurrentPage] = useState(window.location.pathname);
+
+  // Check the URL on component mount and whenever it changes
+  useEffect(() => {
+    const handleLocationChange = () => {
+      setCurrentPage(window.location.pathname);
+    };
+
+    // Listen to popstate event for back/forward navigation
+    window.addEventListener('popstate', handleLocationChange);
+
+    // Cleanup on unmount
+    return () => {
+      window.removeEventListener('popstate', handleLocationChange);
+    };
+  }, []);
+
+  // Render page based on current path
+  const renderPage = () => {
+    switch (currentPage) {
+      case '/':
+        return <Home />;
+      case '/about':
+        return <About />;
+      case '/contact':
+        return <Contact />;
+      default:
+        return <NotFound />;
+    }
+  };
+
   return (
     <div>
       <nav>
         <ul>
-          <li><Link to="/about">About</Link></li>
-          <li><Link to="/contact">Contact</Link></li>
+          <li><a href="/" onClick={(e) => { e.preventDefault(); setCurrentPage('/'); window.history.pushState({}, '', '/'); }}>Home</a></li>
+          <li><a href="/about" onClick={(e) => { e.preventDefault(); setCurrentPage('/about'); window.history.pushState({}, '', '/about'); }}>About</a></li>
+          <li><a href="/contact" onClick={(e) => { e.preventDefault(); setCurrentPage('/contact'); window.history.pushState({}, '', '/contact'); }}>Contact</a></li>
         </ul>
       </nav>
 
-      <Routes>
-        <Route path="/" element={<Home />} />
-        <Route path="/about" element={<About />} />
-        <Route path="/contact" element={<Contact />} />
-        <Route path="*" element={<NotFound />} />
-      </Routes>
+      {renderPage()}
     </div>
   );
 }
